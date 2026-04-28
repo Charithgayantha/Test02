@@ -8,7 +8,16 @@ dotenv.config();
 
 const app = express();
 
-app.use(cors());
+// 1. Place it here, right after defining 'app'
+app.use(cors({
+  origin: 'https://labtest02.netlify.app'
+}));
+
+// 2. Add the manual header fix here
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Private-Network", "true");
+  next();
+});
 app.use(express.json());
 
 app.get("/", (req, res) => {
@@ -30,4 +39,4 @@ mongoose
   .catch((error) => {
     console.error("Database connection error:", error.message);
     process.exit(1);
-  });
+});
